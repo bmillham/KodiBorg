@@ -1,4 +1,4 @@
-class CLHelper(object):
+class Helper(object):
     """ CLHelper
         A class for using the module from the command line
         instead of from kodi """

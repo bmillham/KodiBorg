@@ -7,9 +7,9 @@
 
 from shutil import which
 from myborg.myborg import MyBorg
-from myborg.clhelper import CLHelper
+from myborg.clhelper import Helper
 
-helper = CLHelper()
+helper = Helper()
 
 dump = which('mysqldump')
 if dump is None:
