@@ -11,11 +11,6 @@ from myborg.clhelper import CLHelper
 
 helper = CLHelper()
 
-#def header(flen, fsize, ncsize, psize):
-#    print()
-#    print(f"{'Current':{flen}}   {'Total':{fsize}} | {'File':>{ncsize}} |")
-#    print(f"{'File':{flen}} | {'Size':{fsize}} | {'Count':>{ncsize}} | {'Progre#ss':^{psize}}")
-
 dump = which('mysqldump')
 if dump is None:
     print("ERROR: mysqldump not installed")
@@ -34,11 +29,10 @@ for db in [borg.videodatabase, borg.musicdatabase]:
     fsize=">9.9"
     psize="8.8"
     ncsize="6"
-    #header_printed=False
     helper.headerprinted = False
+    helper.estimated = 0
     saved_lines = []
     progress_status = {}
-    estimated = 0
 
     for i in db():
         if i['type'] == 'progress_percent':
@@ -115,17 +109,12 @@ for db in [borg.videodatabase, borg.musicdatabase]:
                     exit(i['code'])
                 else:
                     continue
-            if estimated > 0 and i['nfiles'] > estimated:
-                estimated = i['nfiles']
             if i['path'] == '':
                 continue
-            line = (f"{i['path']:{flen}} | "
-                  f"{borg.format_bytes(i['original_size']):{fsize}} | "
-                  f"{i['nfiles']:{ncsize}d} | ")
-            if borg.estimatefiles != 'none' and estimated > 0:
-                line += f"{i['nfiles'] / estimated:0.1%}"
-            else:
-                line += "UNKNOWN"
+            line = helper.format_status_line(i)
+            # borg returns backup status before actually starting
+            # the backup. Save the lines until the cache init is done, then
+            # Show them.
             if not helper.headerprinted:
                 saved_lines.append(line)
             else:
