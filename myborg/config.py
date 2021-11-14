@@ -6,9 +6,10 @@ import os
 # options for borg
 
 class ReadConfig(object):
-    def __init__(self, config_file='borg-backup.xml'):
+    def __init__(self, config_file='borg-backup.xml', advanced_file=None):
         self.config_file = config_file
         self.config = None
+        self.dbs = {}
         self.prune_keep = None
         self.prune_details = None
         self.backup_locs = None
@@ -20,12 +21,43 @@ class ReadConfig(object):
         self.encryption_passphrase = None
         self._default_args()
         self.__readconfig()
+        self._advanced_settings(file=advanced_file)
 
 
+    def _advanced_settings(self, file=None):
+        if file is None:
+            return
+        settings = ET.parse(file).getroot()
+        print('dbs', self.dbs, type(self.dbs))
+        for d in ['videodatabase', 'musicdatabase']:
+            inf = settings.find(d)
+            print(inf.find('type').text)
+            if d == 'videodatabase':
+                d = 'videosdatabase'
+            self.dbs[d] = {}
+            for i in ['type', 'name', 'host', 'port', 'user', 'pass']:
+                try:
+                    self.dbs[d][i] = inf.find(i).text
+                except:
+                    self.dbs[d][i] = None
+                try:
+                    self.dbs[d][i] = inf.find(i).text
+                except:
+                    self.dbs[d][i] = None
+        print('dbs', self.dbs)
+        
     def _default_args(self):
         """ Default args for prune and create """
         self.default_args = {'info': ['--json'],
                              'init': ['--log-json'],
+                             'videosdatabase': ['--json',
+                                        '--log-json',
+                                        '--progress',
+                                        '--stats'],
+                             'musicdatabase': ['--json',
+                                       '--log-json',
+                                       '--progress',
+                                       '--stats'],
                              'create': ['--one-file-system',
                                         '--json',
                                         '--log-json',

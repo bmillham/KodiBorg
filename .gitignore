@@ -3,3 +3,4 @@ borg-backup.xml
 *.py~
 *.swp
 */__pycache__/*
+Myborg_*

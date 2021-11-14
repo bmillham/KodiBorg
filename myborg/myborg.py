@@ -10,10 +10,11 @@ class MyBorg(object):
     def __init__(self, repo_location=None,
                  showoutput=False,
                  showcmd=False,
+                 advanced_file=None,
                  backup_name='{now:%Y-%m-%d %H:%M:%S}',
                  args=[], excludes=[], locs=[]):
 
-        self.config = ReadConfig()
+        self.config = ReadConfig(advanced_file=advanced_file)
         self.program = self.config.program
         self.args = self.config.default_args
         self.repo_path = self.config.repo_path
@@ -30,27 +31,68 @@ class MyBorg(object):
         self.showoutput = showoutput
         self.showcmd = showcmd
 
-    def _build_cmd(self, borgcmd=None, args=[], additional_args=[]):
+    def _build_cmd(self, precmd="", dbtype=None, borgcmd=None, args=[], additional_args=[]):
         """ Used to build the borg command line to spawn """
+        realborgcmd = borgcmd
         if borgcmd == 'prune' or borgcmd == 'info' or borgcmd == 'init':
             repo = self.config.repo_path
+        elif borgcmd == 'videosdatabase' or borgcmd == 'musicdatabase':
+            repo = f"{self.config.repo_path}::{borgcmd} {self.config.backup_name}"
+            realborgcmd = 'create'
+            precmd = self.__createmysqldump(dbtype=borgcmd)
         else:
             repo = self.config.repo
-        #print('repo', repo, additional_args)
-        cmd = (f"{self.program} "
-               f"{borgcmd} "
+        cmd = (f"{precmd} "
+               f"{self.program} "
+               f"{realborgcmd} "
                f"{' '.join(self.config.default_args[borgcmd])} "
                f"{' '.join(additional_args)}")
         if borgcmd == 'create':
             cmd += f" {' '.join(self.excludes)} "
         if borgcmd == 'prune':
             cmd += f" {' '.join(self.prune_keep)} "
+        if borgcmd == 'videosdatabase' or borgcmd == 'musicdatabase':
+            cmd += f" --stdin-name MySQL-{dbtype}"
         if borgcmd == 'init':
             cmd += f" --encryption {self.config.encryption}"
-        cmd += f" {repo} "
+        cmd += f" '{repo}' "
         if borgcmd == 'create':
             cmd += f" {' '.join(self.locs)}"
+        if borgcmd == 'videosdatabase' or borgcmd == 'musicdatabase':
+            cmd += " -"
         return cmd
+
+    def videodatabase(self):
+        return self.__run(borgcmd="videosdatabase")
+
+
+    def musicdatabase(self):
+        return self.__run(borgcmd="musicdatabase")
+        
+    def __createmysqldump(self, dbtype=None):
+        # Define the current database versions. This should be
+        # done much better than this ugly hardcoded way!
+        # Probably can be read from kodi. Or use mysql commands to
+        # find the latest version automatically. Or run kodi --version and
+        # keep a map of the latest versions?
+        dbversions = {'videosdatabase': 119,
+                      'musicdatabase': 82}
+        
+        if self.config.dbs[dbtype]['type'].lower() != 'mysql':
+            print(f"Unable to backup database type {self.config.dbs[dbtype]['type']}. Only mysql databases may be backed up")
+            return []
+        dbname = f"{self.config.dbs[dbtype]['name']}{dbversions[dbtype]}"
+        try:
+            dbport = self.config.dbs[dbtype]['port']
+        except:
+            dbport = 3306
+        dbuser = self.config.dbs[dbtype]['user']
+        dbpass = self.config.dbs[dbtype]['pass']
+        dbhost = self.config.dbs[dbtype]['host']
+        # Assumes that mysqldump is in the path. Probably should check
+        # before trying to run if it's actually installed!
+        dbdumpcmd = f"mysqldump -u{dbuser} -p{dbpass} -h{dbhost} -P{dbport} {dbname} |"
+        return dbdumpcmd
 
     def init(self):
         additional_args = []
@@ -97,13 +139,12 @@ class MyBorg(object):
             print("Accepted values are: fast, slow, none")
             return None
 
-    def __run(self, borgcmd=None, additional_args=[], status_update_count=0):
+    def __run(self, borgcmd=None, additional_args=[], status_update_count=0, dbinfo=None):
         """ Spawn a borg process. Output will be sent
             line by line to the calling script. Most lines are
             untouched, but some will have additional info added
             to what borg sent
         """
-        #print('building cmd', additional_args)
         if self.estimatefiles == 'slow':
             count = 0
             estimate_status = {'type': 'estimating',
