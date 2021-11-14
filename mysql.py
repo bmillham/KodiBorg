@@ -7,7 +7,7 @@
 
 from shutil import which
 from myborg.myborg import MyBorg
-from myborg.clhelper import Helper
+from myborg.helper import Helper
 
 helper = Helper()
 

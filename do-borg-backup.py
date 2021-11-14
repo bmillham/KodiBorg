@@ -4,6 +4,7 @@
 
 import os
 from myborg.myborg import MyBorg
+from myborg.helper import Helper
 
 # This is just so it looks nice running from the command line.
 # If called from Kodi then something like this probably would not be needed.
