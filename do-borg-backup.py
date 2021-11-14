@@ -6,16 +6,18 @@ import os
 from myborg.myborg import MyBorg
 from myborg.helper import Helper
 
+helper = Helper()
+
 # This is just so it looks nice running from the command line.
 # If called from Kodi then something like this probably would not be needed.
 
-def header(flen, fsize, ncsize, psize):
-    print()
-    print(f"{'Current':{flen}}   {'Total':{fsize}} | {'File':>{ncsize}} |")
-    print(f"{'File':{flen}} | {'Size':{fsize}} | {'Count':>{ncsize}} | {'Progress':^{psize}}")
+#def header(flen, fsize, ncsize, psize):
+#    print()
+#    print(f"{'Current':{flen}}   {'Total':{fsize}} | {'File':>{ncsize}} |")
+#    print(f"{'File':{flen}} | {'Size':{fsize}} | {'Count':>{ncsize}} | {'Progre#ss':^{psize}}")
 
 # Initialize the module. Also reads the xml config
-borg = MyBorg()
+borg = MyBorg(showcmd=True)
 
 # This example will override the xml config for estimate type.
 # Forces it to fast
@@ -25,9 +27,11 @@ if borg.estimatefiles != 'none':
     e = borg.estimate()
     if type(e) is int:
         estimated = e
+        helper.estimated = e
     elif e is None:
         print("No previous backup to get estimate from")
         estimated = 0
+        helper.estimated = 0
     else:
         for est in e:
             if est['type'] == 'log_message':
@@ -35,6 +39,7 @@ if borg.estimatefiles != 'none':
                 continue
             if est['finished']:
                 estimated = est['nfiles']
+                helper.estimated = est['nfiles']
             else:
                 print(f"Estimating file count: {est['nfiles']}", end="\r", flush=True)
     print(f"\nEstimated files to check: {estimated}")
@@ -51,9 +56,8 @@ flen="<40.40"
 fsize=">9.9"
 psize="8.8"
 ncsize="6"
-header_printed=False
 saved_lines = []
-
+helper.estimated = 0
 # Start the actual backup.
 # You could do borg.showcmd = True to see the generated borg command line
 # if you want. Can be helpful for debugging.
@@ -82,9 +86,9 @@ for i in borg.create():
                 progress_status[i['msgid']] = True
                 if i['msgid'] == 'cache.begin_transaction':
                     print(f"Cache initialized")
-                    if not header_printed:
-                        header(flen, fsize, ncsize, psize)
-                        header_printed = True
+                    if not helper.headerprinted:
+                        helper.header()
+                        #header_printed = True
                         for l in saved_lines:
                             print(l, end="\r", flush=True)
             else:
@@ -137,14 +141,15 @@ for i in borg.create():
             estimated = i['nfiles']
         if i['path'] == '':
             continue
-        line = (f"{os.path.split(i['path'])[1]:{flen}} | "
-              f"{borg.format_bytes(i['original_size']):{fsize}} | "
-              f"{i['nfiles']:{ncsize}d} | ")
-        if borg.estimatefiles != 'none' and estimated > 0:
-            line += f"{i['nfiles'] / estimated:0.1%}"
-        else:
-            line += "UNKNOWN"
-        if not header_printed:
+        #line = (f"{os.path.split(i['path'])[1]:{flen}} | "
+        #      f"{borg.format_bytes(i['original_size']):{fsize}} | "
+        #      f"{i['nfiles']:{ncsize}d} | ")
+        #if borg.estimatefiles != 'none' and estimated > 0:
+        #    line += f"{i['nfiles'] / estimated:0.1%}"
+        #else:
+        #    line += "UNKNOWN"
+        line = helper.format_status_line(i)
+        if not helper.headerprinted:
             saved_lines.append(line)
         else:
             print(line, end="\r", flush=True)

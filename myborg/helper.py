@@ -30,6 +30,7 @@ class Helper(object):
                  f"{'Count':>{self.ncsize}}")
         if self.estimated > 0:
             hline += f" | {'Progress':^{self.psize}}"
+        self.headerprinted = True
         print(hline)
 
     def format_status_line(self, line):

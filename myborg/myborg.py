@@ -52,7 +52,7 @@ class MyBorg(object):
         if borgcmd == 'prune':
             cmd += f" {' '.join(self.prune_keep)} "
         if borgcmd == 'videosdatabase' or borgcmd == 'musicdatabase':
-            cmd += f" --stdin-name MySQL-{dbtype}"
+            cmd += f" --stdin-name MySQL-{borgcmd}"
         if borgcmd == 'init':
             cmd += f" --encryption {self.config.encryption}"
         cmd += f" '{repo}' "

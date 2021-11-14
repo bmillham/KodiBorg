@@ -91,7 +91,7 @@ class ReadConfig(object):
             self.backup_name = self.config.find('backup-name').text
         except AttributeError:
             self.backup_name = "{now:%Y-%m-%d %H:%M:%S}"
-        self.repo = "::".join([self.repo_path, f"'{self.backup_name}'"])
+        self.repo = "::".join([self.repo_path, f"{self.backup_name}"])
         try:
             self.encryption = self.config.find('encryption').text
         except AttributeError:
