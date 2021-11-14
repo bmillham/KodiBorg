@@ -7,11 +7,14 @@
 
 from shutil import which
 from myborg.myborg import MyBorg
+from myborg.clhelper import CLHelper
 
-def header(flen, fsize, ncsize, psize):
-    print()
-    print(f"{'Current':{flen}}   {'Total':{fsize}} | {'File':>{ncsize}} |")
-    print(f"{'File':{flen}} | {'Size':{fsize}} | {'Count':>{ncsize}} | {'Progress':^{psize}}")
+helper = CLHelper()
+
+#def header(flen, fsize, ncsize, psize):
+#    print()
+#    print(f"{'Current':{flen}}   {'Total':{fsize}} | {'File':>{ncsize}} |")
+#    print(f"{'File':{flen}} | {'Size':{fsize}} | {'Count':>{ncsize}} | {'Progre#ss':^{psize}}")
 
 dump = which('mysqldump')
 if dump is None:
@@ -31,7 +34,8 @@ for db in [borg.videodatabase, borg.musicdatabase]:
     fsize=">9.9"
     psize="8.8"
     ncsize="6"
-    header_printed=False
+    #header_printed=False
+    helper.headerprinted = False
     saved_lines = []
     progress_status = {}
     estimated = 0
@@ -60,9 +64,9 @@ for db in [borg.videodatabase, borg.musicdatabase]:
                     progress_status[i['msgid']] = True
                     if i['msgid'] == 'cache.begin_transaction':
                         print(f"Cache initialized")
-                        if not header_printed:
-                            header(flen, fsize, ncsize, psize)
-                            header_printed = True
+                        if not helper.headerprinted:
+                            helper.header()
+                            helper.headerprinted = True
                             for l in saved_lines:
                                 print(l, end="\r", flush=True)
                 else:
@@ -122,7 +126,7 @@ for db in [borg.videodatabase, borg.musicdatabase]:
                 line += f"{i['nfiles'] / estimated:0.1%}"
             else:
                 line += "UNKNOWN"
-            if not header_printed:
+            if not helper.headerprinted:
                 saved_lines.append(line)
             else:
                 print(line, end="\r", flush=True)
