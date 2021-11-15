@@ -6,7 +6,7 @@ from myborg.myborg import MyBorg
 
 info = MyBorg()
 # Get info on the last nlast backups
-nlast = 4
+nlast = 10
 
 for i in info.info(archive_count=nlast):
     if i['type'] == 'return_code':

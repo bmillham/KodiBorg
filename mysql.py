@@ -25,10 +25,6 @@ borg.showcmd=True
 
 print("Backing up databases")
 for db in [borg.videodatabase, borg.musicdatabase]:
-    flen="<40.40"
-    fsize=">9.9"
-    psize="8.8"
-    ncsize="6"
     helper.headerprinted = False
     helper.estimated = 0
     saved_lines = []
@@ -71,37 +67,10 @@ for db in [borg.videodatabase, borg.musicdatabase]:
             if results is None:
                 print("Backup failed")
                 continue
-            archive = results['archive']
-            cache = results['cache']
-            print(f"\nArchive name: {archive['name']}")
-            print(f"Archive fingerprint: {archive['id']}")
-            print(f"Time (start): {archive['start']}")
-            print(f"Time (end):   {archive['end']}")
-            print(f"Duration: {archive['duration']} seconds")
-            print(f"Number of files: {archive['stats']['nfiles']}")
-            print(f"Utilization of max. archive size: {archive['limits']['max_archive_size']:.0f}%")
+            summary = helper.format_summary(results)
             print()
-            a_stats = archive['stats']
-            c_stats = cache['stats']
-            print(f"{'':13.13} "
-                  f"{'Original Size':13.13} "
-                  f"{'Compressed Size':15.15} "
-                  f"{'Deduplicated Size':17.17}")
-            print(f"{'This archive:':13.13} "
-                  f"{borg.format_bytes(a_stats['original_size']):>13.13} "
-                  f"{borg.format_bytes(a_stats['compressed_size']):>15.15} "
-                  f"{borg.format_bytes(a_stats['deduplicated_size']):>17.17}")
-            print(f"{'All archives:':13.13} "
-                  f"{borg.format_bytes(c_stats['total_size']):>13.13} "
-                  f"{borg.format_bytes(c_stats['total_csize']):>15.15} "
-                  f"{borg.format_bytes(c_stats['unique_size']):>17.17}")
-            print()
-            print(f"{'':13.13} "
-                  f"{'Unique chunks':13.13} "
-                  f"{'Total chunks':>15.15}")
-            print(f"{'Chunk index:':13.13} "
-                  f"{c_stats['total_unique_chunks']:>13d} "
-                  f"{c_stats['total_chunks']:>15d}")
+            for l in summary:
+                print(l)
         else:
             if i['type'] == 'return_code':
                 if i['code'] != 0:
