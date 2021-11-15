@@ -52,7 +52,7 @@ class MyBorg(object):
         if borgcmd == 'prune':
             cmd += f" {' '.join(self.prune_keep)} "
         if borgcmd == 'videosdatabase' or borgcmd == 'musicdatabase':
-            cmd += f" --stdin-name MySQL-{dbtype}"
+            cmd += f" --stdin-name MySQL-{borgcmd}"
         if borgcmd == 'init':
             cmd += f" --encryption {self.config.encryption}"
         cmd += f" '{repo}' "
@@ -242,22 +242,6 @@ class MyBorg(object):
             if self.showoutput:
                 print(rc)
             yield rc
-
-    def format_bytes(self, size):
-        """ Instead of requiring humanize to be installed
-            use this simple bytes converter.
-        """
-        power = 2**10
-        n = 0
-        labels = {0: '',
-                  1: 'K',
-                  2: 'M',
-                  3: 'G',
-                  4: 'T'}
-        while size > power:
-            size /= power
-            n += 1
-        return f"{size:0.3f}{labels[n]}B"
 
     @property
     def estimatefiles(self):

@@ -28,10 +28,8 @@ class ReadConfig(object):
         if file is None:
             return
         settings = ET.parse(file).getroot()
-        print('dbs', self.dbs, type(self.dbs))
         for d in ['videodatabase', 'musicdatabase']:
             inf = settings.find(d)
-            print(inf.find('type').text)
             if d == 'videodatabase':
                 d = 'videosdatabase'
             self.dbs[d] = {}
@@ -44,7 +42,6 @@ class ReadConfig(object):
                     self.dbs[d][i] = inf.find(i).text
                 except:
                     self.dbs[d][i] = None
-        print('dbs', self.dbs)
         
     def _default_args(self):
         """ Default args for prune and create """
@@ -91,7 +88,7 @@ class ReadConfig(object):
             self.backup_name = self.config.find('backup-name').text
         except AttributeError:
             self.backup_name = "{now:%Y-%m-%d %H:%M:%S}"
-        self.repo = "::".join([self.repo_path, f"'{self.backup_name}'"])
+        self.repo = "::".join([self.repo_path, f"{self.backup_name}"])
         try:
             self.encryption = self.config.find('encryption').text
         except AttributeError:
