@@ -76,7 +76,6 @@ for i in borg.create():
                     print(f"Cache initialized")
                     if not helper.headerprinted:
                         helper.header()
-                        #header_printed = True
                         for l in saved_lines:
                             print(l, end="\r", flush=True)
             else:

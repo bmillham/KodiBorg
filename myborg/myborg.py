@@ -243,22 +243,6 @@ class MyBorg(object):
                 print(rc)
             yield rc
 
-    def format_bytes(self, size):
-        """ Instead of requiring humanize to be installed
-            use this simple bytes converter.
-        """
-        power = 2**10
-        n = 0
-        labels = {0: '',
-                  1: 'K',
-                  2: 'M',
-                  3: 'G',
-                  4: 'T'}
-        while size > power:
-            size /= power
-            n += 1
-        return f"{size:0.3f}{labels[n]}B"
-
     @property
     def estimatefiles(self):
         return self.__estimatefiles

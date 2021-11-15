@@ -3,7 +3,9 @@
 # An example of how to get stats from a borg repo.
 
 from myborg.myborg import MyBorg
+from myborg.helper import Helper
 
+helper = Helper()
 info = MyBorg()
 # Get info on the last nlast backups
 nlast = 10
@@ -27,6 +29,6 @@ for i in info.info(archive_count=nlast):
         print(f"Name: {a['name']} "
               f"Duration: {a['duration']} "
               f"Files: {stats['nfiles']}")
-        print(f" Original size: {info.format_bytes(stats['original_size'])} "
-              f"Compressed size: {info.format_bytes(stats['compressed_size'])} "
-              f"Deduplicated size: {info.format_bytes(stats['deduplicated_size'])}")
+        print(f" Original size: {helper.format_bytes(stats['original_size'])} "
+              f"Compressed size: {helper.format_bytes(stats['compressed_size'])} "
+              f"Deduplicated size: {helper.format_bytes(stats['deduplicated_size'])}")
