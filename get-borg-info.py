@@ -7,7 +7,7 @@ from myborg.helper import Helper
 
 helper = Helper()
 #info = MyBorg(config_file='borg-backup.xml')
-info = MyBorg(config_file='/home/brian/.kodi/userdata/addon_data/plugin.script.MyBorg/settings.xml')
+info = MyBorg()
 # Get info on the last nlast backups
 nlast = 10
 

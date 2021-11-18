@@ -8,6 +8,10 @@ import os
 class ReadConfig(object):
     def __init__(self, config_file=None, advanced_file=None):
         self.config_file = config_file
+        if self.config_file is None:
+            self.config_file = os.path.join(os.path.expanduser('~'),
+                                       ".kodi/userdata/addon_data/plugin.script.MyBorg/settings.xml")
+        print(self.config_file)
         self.config = None
         self.dbs = {}
         self.prune_keep = None
@@ -22,6 +26,7 @@ class ReadConfig(object):
         self._default_args()
         self.__readconfig()
         self._advanced_settings(file=advanced_file)
+
 
 
     def _advanced_settings(self, file=None):
@@ -65,6 +70,7 @@ class ReadConfig(object):
 
 
     def __readconfig(self):
+        print('reading', self.config)
         self.config = ET.parse(self.config_file).getroot()
         if self.config.tag == 'settings': # This is a kodi settings.xml
             self.__readkodiconfig()
@@ -117,11 +123,11 @@ class ReadConfig(object):
             prune = self.config.find('prune')
         except AttributeError:
             prune = None
+        self.repo_dir = self.config.find('repo-path').text
         try:
             self.repo_name = self.config.find('repo-name').text
         except AttributeError:
             self.repo_name = platform.node().title()
-        self.repo_path = os.path.join(self.repo_dir, self.repo_name)
         try:
             self.backup_name = self.config.find('backup-name').text
         except AttributeError:

@@ -8,7 +8,7 @@ class MyBorg(object):
         A class to wrap borg command lines
     """
     def __init__(self, repo_location=None,
-                 config_file='borg-backup.xml',
+                 config_file=None,
                  showoutput=False,
                  showcmd=False,
                  advanced_file=None,
