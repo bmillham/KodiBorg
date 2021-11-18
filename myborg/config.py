@@ -11,7 +11,6 @@ class ReadConfig(object):
         if self.config_file is None:
             self.config_file = os.path.join(os.path.expanduser('~'),
                                        ".kodi/userdata/addon_data/plugin.script.MyBorg/settings.xml")
-        print(self.config_file)
         self.config = None
         self.dbs = {}
         self.prune_keep = None
@@ -70,7 +69,6 @@ class ReadConfig(object):
 
 
     def __readconfig(self):
-        print('reading', self.config)
         self.config = ET.parse(self.config_file).getroot()
         if self.config.tag == 'settings': # This is a kodi settings.xml
             self.__readkodiconfig()
