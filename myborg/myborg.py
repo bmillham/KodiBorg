@@ -8,13 +8,15 @@ class MyBorg(object):
         A class to wrap borg command lines
     """
     def __init__(self, repo_location=None,
+                 config_file='borg-backup.xml',
                  showoutput=False,
                  showcmd=False,
                  advanced_file=None,
                  backup_name='{now:%Y-%m-%d %H:%M:%S}',
                  args=[], excludes=[], locs=[]):
 
-        self.config = ReadConfig(advanced_file=advanced_file)
+        self.config = ReadConfig(config_file=config_file,
+                                 advanced_file=advanced_file)
         self.program = self.config.program
         self.args = self.config.default_args
         self.repo_path = self.config.repo_path

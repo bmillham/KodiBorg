@@ -20,7 +20,8 @@ if dump is None:
 # path to the kodi advancedsettings.xml. Only mysql databases can be
 # backed up. video and music databases are backed up in different 'files'
 
-borg = MyBorg(advanced_file="/home/brian/.kodi/userdata/advancedsettings.xml")
+borg = MyBorg(advanced_file="/home/brian/.kodi/userdata/advancedsettings.xml",
+              config_file='/home/brian/.kodi/userdata/addon_data/plugin.script.MyBorg/settings.xml')
 borg.showcmd=True
 
 print("Backing up databases")

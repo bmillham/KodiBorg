@@ -6,7 +6,7 @@ import os
 # options for borg
 
 class ReadConfig(object):
-    def __init__(self, config_file='borg-backup.xml', advanced_file=None):
+    def __init__(self, config_file=None, advanced_file=None):
         self.config_file = config_file
         self.config = None
         self.dbs = {}
@@ -63,8 +63,47 @@ class ReadConfig(object):
                                        '--list',
                                        '--log-json']}
 
+
     def __readconfig(self):
         self.config = ET.parse(self.config_file).getroot()
+        if self.config.tag == 'settings': # This is a kodi settings.xml
+            self.__readkodiconfig()
+        else:
+            self.__readoldconfig()
+        self.repo_path = os.path.join(self.repo_dir, self.repo_name)
+        self.repo = "::".join([self.repo_path, f"{self.backup_name}"])
+
+    def __readkodiconfig(self):
+        self.program = self.__findid('program')
+        self.repo_dir = self.__findid('repo_path')
+        self.repo_name = self.__findid('repo_name')
+        self.backup_name = self.__findid('backup_name')
+        self.encryption = self.__findid('encryption')
+        self.encryption_passphrase = self.__findid('encryption_passphrase')
+        self.estimate_files = self.__findid('estimate_files').lower()
+        self.storage_quota = self.__findid('storage_quota') + "G"
+        try:
+            if self.__findid('make_parent_dirs').lower() == 'true':
+                self.make_parent_dirs = True
+            else:
+                self.make_parent_dirs = False
+        except:
+            self.make_parent_dirs = False
+        self.backup_locs = self.__findid('location').split(" / ")
+        self.exclude_locs = [f"--exclude '{ex}'" for ex in self.__findid('exclude').split(" / ")]
+        self.prune_details = {n.attrib['id'].split('_')[1]:n.text for n in self.config if n.attrib['id'].startswith('prune')}
+        self.prune_keep = [f"--keep-{pk} {self.prune_details[pk]}" for pk in self.prune_details]
+
+
+    def __findid(self, tid):
+        try:
+            return self.config.find(f"./*[@id='{tid}']").text
+        except:
+            return None
+    
+
+    def __readoldconfig(self):
+
         bt = self.config.find('backup')
         try:
             self.program = self.config.find('program').text
@@ -78,7 +117,6 @@ class ReadConfig(object):
             prune = self.config.find('prune')
         except AttributeError:
             prune = None
-        self.repo_dir = self.config.find('repo-path').text
         try:
             self.repo_name = self.config.find('repo-name').text
         except AttributeError:
@@ -88,7 +126,6 @@ class ReadConfig(object):
             self.backup_name = self.config.find('backup-name').text
         except AttributeError:
             self.backup_name = "{now:%Y-%m-%d %H:%M:%S}"
-        self.repo = "::".join([self.repo_path, f"{self.backup_name}"])
         try:
             self.encryption = self.config.find('encryption').text
         except AttributeError:

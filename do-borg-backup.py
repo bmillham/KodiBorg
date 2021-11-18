@@ -9,7 +9,7 @@ from myborg.helper import Helper
 helper = Helper()
 
 # Initialize the module. Also reads the xml config
-borg = MyBorg(showcmd=True)
+borg = MyBorg(showcmd=True, config_file='/home/brian/.kodi/userdata/addon_data/plugin.script.MyBorg/settings.xml')
 
 # This example will override the xml config for estimate type.
 # Forces it to fast

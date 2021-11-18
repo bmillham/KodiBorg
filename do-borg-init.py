@@ -2,7 +2,7 @@
 
 from myborg.myborg import MyBorg
 
-borg = MyBorg()
+borg = MyBorg(config_file='/home/brian/.kodi/userdata/addon_data/plugin.script.MyBorg/settings.xml')
 
 # Create a new repo
 # borg.showoutput=True

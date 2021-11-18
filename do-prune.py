@@ -9,7 +9,7 @@ from myborg.myborg import MyBorg
 # If called from Kodi then something like this probably would not be needed.
 
 # Initialize the module. Also reads the xml config
-borg = MyBorg()
+borg = MyBorg(config_file='/home/brian/.kodi/userdata/addon_data/plugin.script.MyBorg/settings.xml')
 
 if borg.prune_keep is None:
     print("No prune configuration found. Doing nothing.")
