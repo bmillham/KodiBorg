@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<addon id="plugin.script.MyBorg" name="MyBorg-backup" version="0.2" provider-name="bmillham and zjoasan">
+	<requires>
+		<import addon="xbmc.python" version="3.0.0"/>
+	</requires>
+	<extension point="xbmc.python.script" library="resources/lib/default.py">
+		<provides>executable</provides>
+	</extension>
+	<extension point="xbmc.addon.metadata">
+		<summary lang="en_gb">Admin your Borg backup</summary>
+		<description lang="en_gb">An addon to administer and trigger Borg</description>
+		<disclaimer lang="en_gb">Use at your own risk</disclaimer>
+		<language>en</language> <!-- the language of the videos or other content the plugin provides, may be omitted in case the addon does not provide any content -->
+		<platform>linux</platform>
+		<license>GPL3</license>
+		<forum>https://discorse.osmc.tv</forum> <!-- may be omitted  -->
+		<website></website> <!-- the url of the website that contains the videos (or the official website of your plugin). May be omitted.  -->
+		<email></email> <!-- may be omitted  -->
+		<source></source>
+		<news>Trying to make addon from py-script</news>
+		<assets>
+			<icon>resources/media/icon.png</icon>
+			<fanart>resources/media/fanart.jpg</fanart>
+			<banner></banner> <!-- optional -->
+			<clearlogo></clearlogo> <!-- optional  -->
+			<screenshot></screenshot> <!-- optional, max 10  -->
+		</assets>
+	</extension>
+</addon>

@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<!-- Example configuration file. Copy to borg-backup.xml and modify for
+     your system -->
+<borg>
+  <!-- if <program> is not defined, it will default to borg. It *should* work
+       because the borg process is called via bash. But if not you can
+       force the full path with <program> -->
+  <!-- <program>/usr/bin/borg</program> -->
+  <!-- Path to the borg repo. -->
+  <repo-path>brian@eldrad.local:/media/Sonic/borg-repos</repo-path>
+  <!-- if repo-name is not set, {hostname} will be used -->
+  <!-- <repo-name>{hostname}</repo-name> -->
+  <!-- Name of the backup. You can use the built in borg syntax.
+       If not specified, {now:%Y-%m-%d %H:%M:%S} will be used. -->
+  <!-- <backup-name>{now:%Y-%m-%d %H:%M:%S}</backup-name> -->
+  <!-- Encryption to use. Current valid values are: none, keyfile,
+       repokey, authenticated, keyfile-blake2, repokey-blake2,
+       authenticated-blake2 -->
+  <encryption>keyfile-blake2</encryption>
+  <encryption-passphrase>thisisapassphrase</encryption-passphrase>
+  <!-- Borg has no built-in way to estimate files for a backup.
+       You can supply 3 ways here to attempt to get an estimate:
+       slow == does a dry-run of a backup. Is slow
+       fast == use the file count of the last successful backup
+       none == don't get an estimate
+       If none then there will be no running percent available during the backup
+       If not defined defaults to none.
+  -->
+  <estimate-files>fast</estimate-files>
+  <!-- Options to create a repository -->
+  <init>
+    <!-- storage-quota is optional. If not specified the repo can grow
+         to any size. This is not the size of the data backed up, but
+         the actual deduplicated size. Read the borg documents on what
+         values are allowed. -->
+    <storage-quota>8G</storage-quota>
+    <!-- If this tag is set to true then parent dirs are created. -->
+    <make-parent-dirs>true</make-parent-dirs>
+  </init>
+  <backup>
+    <!-- borg wildcards are used for the following tags -->
+    <!-- Spaces are allowed and will be properly quoted when sent to borg -->
+    <!-- location tags are for directories to back up -->
+    <location>/etc/apt</location>
+    <location>/etc/fstab</location>
+    <location>/etc/auto*</location>
+    <location>/etc/exports</location>
+    <location>/etc/samba</location>
+    <location>/home</location>
+    <!-- exclude tags are for directories to not backup. -->
+    <exclude>*/.cache/</exclude>
+    <exclude>*/.kodi/temp/</exclude>
+    <exclude>*/Videos/</exclude>
+    <exclude>*lost+found</exclude>
+    <exclude>*/Cache/</exclude>
+  </backup>
+  <!-- Read the borg docs about how prune works!!!
+       This section is not required, but if included at least one
+       interval must be specified. All of the keep options are allowed.
+       As shown in the example, leave off the keep- part, it will be added
+       automatically. -->
+  <prune>
+    <weekly>4</weekly>
+    <monthly>12</monthly>
+    <daily>7</daily>
+    <minutely>60</minutely>
+    <yearly>-1</yearly>
+  </prune>
+</borg>

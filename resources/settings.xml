@@ -1,0 +1,200 @@
+<?xml version="1.0" ?>
+<settings version="1">
+  <section id="plugin.script.MyBorg">
+    <category id="borg" label="32016" help="">
+      <group id="1">
+	<setting id="program" type="string" label="32001" help="If not set It *should* work because the borg process is called via bash. But if not you can force the full path with">
+	  <level>0</level>
+	  <default>/usr/bin/borg</default>
+	  <constraints>
+	    <allowempty>true</allowempty>
+	  </constraints>
+	  <control type="edit" format="string">
+	    <heading>32001</heading>
+	  </control>
+        </setting>
+	<setting id="repo_path" type="string" label="32017" help="Example: brian@eldrad.local:/media/Sonic/borg-repos">
+	  <level>0</level>
+	  <default>user@host.local:/pat/to/borg-repos</default>
+	  <constraints>
+	    <allowempty>False</allowempty>
+	  </constraints>
+	  <control type="edit" format="string">
+	    <heading>32017</heading>
+	  </control>
+        </setting>
+	<setting id="repo_name" type="string" label="32002" help="If repo-name is not set, {hostname} will be used.">
+	  <level>0</level>
+	  <default/>
+	  <constraints>
+	    <allowempty>true</allowempty>
+	  </constraints>
+	  <control type="edit" format="string">
+	    <heading>32002</heading>
+	  </control>
+	</setting>
+
+	<setting id="backup_name" type="string" label="32003" help="Name of the backup. You can use the built in borg syntax. If not specified, {now:%Y-%m-%d %H:%M:%S} will be used.">
+	  <level>0</level>
+	  <default/>
+	  <constraints>
+	    <allowempty>true</allowempty>
+	  </constraints>
+	  <control type="edit" format="string">
+	    <heading>32003</heading>
+	  </control>
+	</setting>
+
+	<setting id="encryption" type="string" label="32004" help="none, keyfile, repokey, authenticated, keyfile-blake2, repokey-blake2, authenticated-blake2.">
+	  <level>0</level>
+	  <default>keyfile-blake2</default>
+	  <constraints>
+	    <options>
+	      <option>none</option>
+	      <option>keyfile</option>
+	      <option>repokey</option>
+	      <option>authenticated</option>
+	      <option>keyfile-blake2</option>
+	      <option>repokey-blake2</option>
+	      <option>authenticated-blake2</option>
+	    </options>
+	    <allowempty>false</allowempty>
+	  </constraints>
+	  <control type="list" format="string">
+	    <heading>32004</heading>
+	  </control>
+	</setting>
+
+	<setting id="encryption_passphrase" type="string" label="32005" help="Input a word that will unlock the encryption.">
+	  <level>0</level>
+	  <default/>
+	  <constraints>
+	    <allowempty>true</allowempty>
+	  </constraints>
+	  <control type="edit" format="string">
+	    <heading>32005</heading>
+	  </control>
+	</setting>
+
+	<setting id="estimate_files" type="string" label="32006" help="">
+	  <level>0</level>
+	  <default>fast</default>
+	  <constraints>
+	    <options>
+	      <option>fast</option>
+	      <option>slow</option>
+	      <option>none</option>
+	    </options>
+	    <allowempty>false</allowempty>
+	  </constraints>
+	  <control type="list" format="string">
+	    <heading>32006</heading>
+	  </control>
+	</setting>
+      </group>
+    </category>
+    <category id="init" label="32018">
+      <group id="1">
+	<setting id="storage_quota" type="integer" label="32007" help="Storage-quota is optional. If not specified the repo can grow to any size. This is not the size of the data backed up, but the actual deduplicated size. Read the borg documents on what values are allowed.">
+	  <level>0</level>
+	  <default>8</default>
+	  <constraints>
+	    <allowempty>true</allowempty>
+	  </constraints>
+	  <control type="edit" format="string">
+	    <heading>32007</heading>
+	  </control>
+	</setting>
+      
+	<setting id="make_parent_dirs" type="boolean" label="32008" help="If this tag is set to true then parent dirs are created.">
+	  <level>0</level>
+	  <default>false</default>
+	  <control type="toggle"/>
+	</setting>
+      </group>
+    </category>
+    <category id="backup" label="32019">
+      <group id="1">
+      	<setting id="location" type="string" label="32009" help="Make sure ' / ' in between every path">
+	  <level>0</level>
+	  <default>/etc/apt / /etc/fstab / /etc/auto* / /etc/exports / /etc/samba / /home</default>
+	  <constraints>
+	    <allowempty>false</allowempty>
+	  </constraints>
+	  <control type="edit" format="string">
+	    <heading>32009</heading>
+	  </control>
+	</setting>
+
+	<setting id="exclude" type="string" label="32010" help="Make sure ' / ' in between every path">
+	  <level>0</level>
+	  <default>*/.cache/ / */.kodi/temp/ / */Videos/ / *lost+found / */Cache/</default>
+	  <constraints>
+	    <allowempty>false</allowempty>
+	  </constraints>
+	  <control type="edit" format="string">
+	    <heading>32010</heading>
+	  </control>
+	</setting>
+      </group>
+    </category>
+    <category id="prune" label="32020">
+      <group id="1">
+	<setting id="prune_minutely" type="integer" label="32014" help="">
+	  <level>0</level>
+	  <default>60</default>
+	  <constraints>
+	    <allowempty>false</allowempty>
+	  </constraints>
+	  <control type="edit" format="integer">
+	    <heading>32014</heading>
+	  </control>
+	</setting>
+
+	<setting id="prune_daily" type="integer" label="32013" help="">
+	  <level>0</level>
+	  <default>7</default>
+	  <constraints>
+	    <allowempty>false</allowempty>
+	  </constraints>
+	  <control type="edit" format="integer">
+	    <heading>32013</heading>
+	  </control>
+	</setting>
+
+	<setting id="prune_weekly" type="integer" label="32011" help="">
+	  <level>0</level>
+	  <default>4</default>
+	  <constraints>
+	    <allowempty>false</allowempty>
+	  </constraints>
+	  <control type="edit" format="integer">
+	    <heading>32011</heading>
+	  </control>
+	</setting>
+
+	<setting id="prune_monthly" type="integer" label="32012" help="">
+	  <level>0</level>
+	  <default>12</default>
+	  <constraints>
+	    <allowempty>false</allowempty>
+	  </constraints>
+	  <control type="edit" format="integer">
+	    <heading>32012</heading>
+	  </control>
+	</setting>
+
+	<setting id="prune_yearly" type="integer" label="32015" help="">
+	  <level>0</level>
+	  <default>-1</default>
+	  <constraints>
+	    <allowempty>false</allowempty>
+	  </constraints>
+	  <control type="edit" format="integer">
+	    <heading>32015</heading>
+	  </control>
+	</setting>
+      </group>
+    </category>
+  </section>
+</settings>

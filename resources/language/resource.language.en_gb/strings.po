@@ -1,0 +1,102 @@
+# Addon language file 
+msgid ""
+msgstr ""
+"Project-Id-Version: 
+""Report-Msgid-Bugs-To: 
+""POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE
+""PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE
+""Last-Translator: 
+""Language-Team: 
+""MIME-Version: 1.0
+""Content-Type: text/plain; charset=UTF-8
+""Content-Transfer-Encoding: 8bit
+""Language: en_gb
+""Plural-Forms: nplurals=2; plural=(n != 1);
+"
+#. Strings for plugin.script.MyBorg
+
+msgctxt "#32000" 
+msgid "Borg backup settings" 
+msgstr ""
+
+msgctxt "#32001"
+msgid "Path to Borg executable"
+msgstr ""
+
+msgctxt "#32002"
+msgid "Repo-name"
+msgstr ""
+
+msgctxt "#32003"
+msgid "Backup-name"
+msgstr ""
+
+msgctxt "#32004"
+msgid "Encryption"
+msgstr ""
+
+msgctxt "#32005"
+msgid "Encryption passphrase"
+msgstr ""
+
+msgctxt "#32006"
+msgid "Estimate files"
+msgstr ""
+
+msgctxt "#32007"
+msgid "Storage Quota"
+msgstr ""
+
+msgctxt "#32008"
+msgid "Make parent dirs"
+msgstr ""
+
+msgctxt "#32009"
+msgid "Include"
+msgstr ""
+
+msgctxt "#32010"
+msgid "Exclude"
+msgstr ""
+
+msgctxt "#32011"
+msgid "Prune Weekly"
+msgstr ""
+
+msgctxt "#32012"
+msgid "Prune Monthly"
+msgstr ""
+
+msgctxt "#32013"
+msgid "Prune Daily"
+msgstr ""
+
+msgctxt "#32014"
+msgid "Prune Minutely"
+msgstr ""
+
+msgctxt "#32015"
+msgid "Prune Yearly"
+msgstr ""
+
+msgctxt "#32016"
+msgid "Borg"
+msgstr ""
+
+msgctxt "#32017"
+msgid "Path to Borg Repo"
+msgstr ""
+
+msgctxt "#32018"
+msgid "Init"
+msgstr ""
+
+msgctxt "#32019"
+msgid "Backup"
+msgstr ""
+
+msgctxt "#32020"
+msgid "Prune"
+msgstr ""
+
+
