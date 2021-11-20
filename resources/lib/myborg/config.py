@@ -81,7 +81,11 @@ class ReadConfig(object):
         self.program = self.__findid('program')
         self.repo_dir = self.__findid('repo_path')
         self.repo_name = self.__findid('repo_name')
+        if self.repo_name is None:
+            self.repo_name = "{hostname}"
         self.backup_name = self.__findid('backup_name')
+        if self.backup_name is None:
+            self.backup_name = "{now:%Y-%m-%d %H:%M:%S}"
         self.encryption = self.__findid('encryption')
         self.encryption_passphrase = self.__findid('encryption_passphrase')
         self.estimate_files = self.__findid('estimate_files').lower()

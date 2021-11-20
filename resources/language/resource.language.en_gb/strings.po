@@ -16,19 +16,19 @@ msgstr ""
 #. Strings for plugin.script.MyBorg
 
 msgctxt "#32000" 
-msgid "Borg backup settings" 
+msgid "Borg Backup Settings" 
 msgstr ""
 
 msgctxt "#32001"
-msgid "Path to Borg executable"
+msgid "Path to Borg Executable"
 msgstr ""
 
 msgctxt "#32002"
-msgid "Repo-name"
+msgid "Repository Name"
 msgstr ""
 
 msgctxt "#32003"
-msgid "Backup-name"
+msgid "Backup Name"
 msgstr ""
 
 msgctxt "#32004"
@@ -36,11 +36,11 @@ msgid "Encryption"
 msgstr ""
 
 msgctxt "#32005"
-msgid "Encryption passphrase"
+msgid "Encryption Passphrase"
 msgstr ""
 
 msgctxt "#32006"
-msgid "Estimate files"
+msgid "Estimate Files"
 msgstr ""
 
 msgctxt "#32007"
@@ -48,15 +48,15 @@ msgid "Storage Quota"
 msgstr ""
 
 msgctxt "#32008"
-msgid "Make parent dirs"
+msgid "Make Parent Directories"
 msgstr ""
 
 msgctxt "#32009"
-msgid "Include"
+msgid "Include Files and Directories"
 msgstr ""
 
 msgctxt "#32010"
-msgid "Exclude"
+msgid "Exclude Files and Directories"
 msgstr ""
 
 msgctxt "#32011"
@@ -80,15 +80,15 @@ msgid "Prune Yearly"
 msgstr ""
 
 msgctxt "#32016"
-msgid "Borg"
+msgid "Program"
 msgstr ""
 
 msgctxt "#32017"
-msgid "Path to Borg Repo"
+msgid "Path to Repository"
 msgstr ""
 
 msgctxt "#32018"
-msgid "Init"
+msgid "Repository"
 msgstr ""
 
 msgctxt "#32019"
@@ -99,4 +99,42 @@ msgctxt "#32020"
 msgid "Prune"
 msgstr ""
 
+msgctxt "#32021"
+msgid "If not set It should work because the borg process is called via bash. But if not you can force the full path with this setting"
+msgstr ""
 
+msgctxt "#32022"
+msgid "You can use a local path, or borgs SSH syntax"
+msgstr ""
+
+msgctxt "#32023"
+msgid "If not set, {hostname} will be used."
+msgstr ""
+
+msgctxt "#32024"
+msgid "Storage-quota is optional. If not specified the repo can grow to any size. This is not the size of the data backed up, but the actual deduplicated size. Read the borg documents on what values are allowed. Value is GB"
+msgstr ""
+
+msgctxt "#32025"
+msgid "Borg program specific settings"
+msgstr ""
+
+msgctxt "#32026"
+msgid "Settings for the Repository"
+msgstr ""
+
+msgctxt "#32027"
+msgid "Select to create parent directories when initializing the repository"
+msgstr ""
+
+msgctxt "#32028"
+msgid "Select repository encryption type."
+msgstr ""
+
+msgctxt "#32029"
+msgid "Passphrase to access the repository"
+msgstr ""
+
+msgctxt "#32030"
+msgid "Name of the backup. You can use the built in borg syntax. If not specified, {now:%Y-%m-%d %H:%M:%S} will be used."
+msgstr ""
